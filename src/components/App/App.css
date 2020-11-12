@@ -4,6 +4,10 @@
   /* font-family: 'Short Stack', cursive; */
 }
 
+.fas {
+  cursor: pointer;
+}
+
 .mainContainer {
   background-color: #F5F5F5;
   width: 50%;
@@ -30,7 +34,15 @@ input[type="submit"] {
   height: 26px;
   background-color: white;
   border-radius: 5px;
+}
 
+.newBurger {
+  display: flex;
+  justify-content: space-between;
+}
+
+.alert {
+  color: red;
 }
 
 .searchInput {
@@ -65,6 +77,8 @@ input[type="submit"] {
   margin-left: 18px;
   font-size: 120%;
   flex-grow: 1;
+  cursor: pointer;
+  user-select: none;
 }
 
 .arrows {
