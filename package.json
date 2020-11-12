@@ -1,0 +1,42 @@
+{
+  "name": "drivewealth.dev",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.0",
+    "json-server": "^0.16.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "concurrently": "^5.3.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:3001/api",
+  "scripts": {
+    "start": "concurrently --kill-others -n API,DEV -c magenta,green \"npm run start:api\" \"npm run start:site\"",
+    "start:site": "react-scripts start",
+    "start:api": "json-server -d 700 -p 3001 src/api/api.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test"
+  }
+}
