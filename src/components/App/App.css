@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+.fas.fa-search {
+  cursor: none
+}
+
 .mainContainer {
   background-color: #F5F5F5;
   width: 50%;
@@ -114,6 +118,7 @@ input[type="submit"] {
   border: 1px solid black;
   border-right: none;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .control-right {
@@ -121,21 +126,16 @@ input[type="submit"] {
   text-align: center;
   border: 1px solid black;
   cursor: pointer;
+  transition: all 0.2s;
 }
-
-/* .control:active,
-.control-right:active {
-  background-color: #95BCF2;
-} */
 
 .control:hover,
 .control-right:hover {
-  background-color: gray;
+  background-color: rgb(199, 199, 199);
 }
 
 .paginator {
   display: flex;
-  /* margin-bottom: px; */
   position: absolute;
   right: 15px
 }

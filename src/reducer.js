@@ -31,6 +31,20 @@ export default function reducer(state, action) {
       const displayDisapproved = state.burgers.filter(el => !el.approved)
       return { ...state, burgers: [ ...displayApproved, ...displayDisapproved ] }
 
+    case 'SEARCH_BURGER':
+      const selected = [];
+      const search = payload.search;
+      const allBurgers = payload.allBurgers;
+      console.log("IN REDUCER: ", allBurgers)
+      if (search.length < 1) return state;
+      allBurgers.forEach(el => {
+        if (el.name.replace(/\W/g, '').toLowerCase().includes(search.toLowerCase())) {
+          selected.push(el);
+          console.log("SELECTED: ", selected)
+        }
+      })
+      return { ...state, burgers: selected }
+
     default: 
       return state;
   }

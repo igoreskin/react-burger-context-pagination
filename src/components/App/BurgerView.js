@@ -25,7 +25,7 @@ const BurgerView = ({ burger, approveBurger, disapproveBurger, upvoteBurger, dow
 
   return (
     <div className={approved ? 'burgerView approved' : 'burgerView'}>
-      <p className="votes">{votes}</p>
+      <p className="votes">{votes >= 0 ? votes : 0}</p>
       <p className="burgerName" onDoubleClick={handleNameClick}>{burger.name}</p>
       <div className="arrows">
         <i className="fas fa-angle-up" onClick={handleUpClick}></i>

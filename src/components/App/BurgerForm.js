@@ -12,8 +12,8 @@ const BurgerForm = ( {addBurger }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    addBurger(newBurger)
-    setNewBurger('')
+    addBurger(newBurger);
+    setNewBurger('');
     refContainer.current.focus();
   }
 

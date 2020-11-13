@@ -1,21 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import BurgerContext from '../../context';
 
-const SearchForm = () => {
+const SearchForm = ({ allBurgers, toBeginning }) => {
 
-  const [search, setSearch] = useState('');
+  const { state, dispatch } = useContext(BurgerContext);
 
   const handleChange = e => {
-    setSearch(e.target.value)
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(search)
+    dispatch({ type: 'SEARCH_BURGER', payload: { search: e.target.value, allBurgers }});
+    toBeginning();
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="searchInput">
           <i className="fas fa-search"></i>
           <input 

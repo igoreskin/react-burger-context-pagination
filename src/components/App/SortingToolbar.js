@@ -38,6 +38,9 @@ const SortingToolbar = (props) => {
       case 'Approved':
         props.displayApproved();
         break;
+
+      default:
+        console.log("No selection")
     }
   }
 

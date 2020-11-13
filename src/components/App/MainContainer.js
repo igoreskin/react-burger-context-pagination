@@ -15,6 +15,9 @@ const MainContainer = () => {
 
   const [alert, setAlert] = useState(false);
 
+  const [allBurgers, setAllBurgers] = useState([]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {fetchBurgers()}, []);
 
   const [page, setPage] = useState({
@@ -26,9 +29,10 @@ const MainContainer = () => {
   const fetchBurgers = async () => {
     try {
       const res = await axios.get('http://localhost:3001/burgers');
-      console.log("RESPONSE: ", res)
+      // console.log("RESPONSE: ", res)
       dispatch({ type: "FETCH_BURGERS", payload: res.data });
       setPage({ ...page, totalRows: res.data.length});
+      setAllBurgers(res.data)
     } catch (error) {
       console.error(error.message);
     }
@@ -42,10 +46,10 @@ const MainContainer = () => {
   const addBurger = async (burger) => {
     if (burger.length < 1) return;
     const names = [];
-    state.burgers.forEach(el => names.push(el.name))
-    console.log("NAMES: ", names)
+    state.burgers.forEach(el => names.push(el.name.replace(/\W/g, '').toLowerCase()));
+    // console.log("NAMES: ", names)
     const id = uuidv4();
-    if (names.includes(burger)) {
+    if (names.includes(burger.replace(/\W/g, '').toLowerCase())) {
       displayAlert() 
     } else {
       try {
@@ -96,14 +100,18 @@ const MainContainer = () => {
 }
 
   const downvoteBurger = async (burger) => {
-    try {
-      const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
-        ...burger, votes: burger.votes - 1, created: burger.created, updated: Date.now()
-      });
-    } catch (error) {
-      console.error(error.message)
+    if (burger.votes > 0) {
+      try {
+        const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
+          ...burger, votes: burger.votes - 1, created: burger.created, updated: Date.now()
+        });
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   }
+
+  // ----------------------- Sorting functions ----------------------- //
 
   const sortByCreated = () => {
     dispatch({ type: 'SORT_BY_CREATED' });
@@ -175,7 +183,7 @@ const MainContainer = () => {
         sortLeastPopular={sortLeastPopular} 
         displayApproved={displayApproved}
       />
-      <SearchForm />
+      <SearchForm allBurgers={allBurgers} toBeginning={toBeginning} />
       {state.burgers.length > 0 ? <div>{renderBurgers}</div> : <Spinner />}
       <BurgerPaginator page={page} nextPage={nextPage} prevPage={prevPage} toBeginning={toBeginning} toEnd={toEnd} />
     </div>
