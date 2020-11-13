@@ -125,9 +125,7 @@ const MainContainer = () => {
     dispatch({ type: 'DISPLAY_APPROVED' });
   }
 
-  // -----------------------------------------------------------------------------------------------
-
-  console.log(state.burgers.length)
+  // ----------------------- Pagination functions ----------------------- //
 
   const nextPage = () => {
     setPage({ ...page, firstRow: parseInt(page.firstRow) + parseInt(page.rowsPerPage) });
@@ -142,7 +140,9 @@ const MainContainer = () => {
   }
 
   const toEnd = () => {
-    setPage({ ...page, firstRow: (page.totalRows - page.totalRows % page.rowsPerPage) })
+    page.totalRows % page.rowsPerPage !== 0 ?
+    setPage({ ...page, firstRow: (page.totalRows - page.totalRows % page.rowsPerPage) }) :
+    setPage({ ...page, firstRow: (page.totalRows - page.rowsPerPage) })
   }
 
   let burgersToDisplay = state.burgers.slice(parseInt(page.firstRow), (parseInt(page.firstRow) + parseInt(page.rowsPerPage)))

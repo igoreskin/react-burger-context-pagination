@@ -4,7 +4,6 @@ const BurgerPaginator = ({ page, nextPage, prevPage, toBeginning, toEnd }) => {
 
   const nextRight = () => {
     (page.firstRow + page.rowsPerPage < page.totalRows) && nextPage();
-    console.log(page.firstRow)
   }
 
   const nextLeft = () => {
@@ -24,7 +23,7 @@ const BurgerPaginator = ({ page, nextPage, prevPage, toBeginning, toEnd }) => {
     lastDisplayedRow = `- ${parseInt(page.firstRow) + parseInt(page.rowsPerPage)}`
   } else if (parseInt(page.firstRow) + 1 === (parseInt(page.totalRows))) {
     lastDisplayedRow = ''
-  } else if (parseInt(page.firstRow) + parseInt(page.rowsPerPage) > page.totalRows) {
+  } else if (parseInt(page.firstRow) + parseInt(page.rowsPerPage) >= page.totalRows) {
     lastDisplayedRow = `- ${parseInt(page.totalRows)}`
   }
 
