@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const BurgerView = ({ burger, approveBurger, disapproveBurger, upvoteBurger, downvoteBurger }) => {
 
+  const [approved, setApproved] = useState(burger.approved);
+
+  const [votes, setVotes] = useState(burger.votes)
+
   const handleNameClick = () => {
-    burger.approved ? disapproveBurger(burger) : approveBurger(burger)
+    approved ? disapproveBurger(burger) : approveBurger(burger)
+    setApproved(!approved);
   }
 
   const handleUpClick = () => {
     console.log('UPVOTE: ', burger.id)
+    setVotes(votes + 1)
     upvoteBurger(burger);
   }
 
   const handleDownClick = () => {
     console.log('DOWNVOTE: ', burger.id)
-    downvoteBurger(burger);
+    votes > 0 && setVotes(votes - 1);
+    votes > 0 && downvoteBurger(burger);
   }
 
   return (
-    <div className={burger.approved ? 'burgerView approved': 'burgerView'}>
-      <p className="votes">{burger.votes}</p>
+    <div className={approved ? 'burgerView approved' : 'burgerView'}>
+      <p className="votes">{votes}</p>
       <p className="burgerName" onDoubleClick={handleNameClick}>{burger.name}</p>
       <div className="arrows">
         <i className="fas fa-angle-up" onClick={handleUpClick}></i>

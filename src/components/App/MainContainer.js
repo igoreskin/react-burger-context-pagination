@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
+import actions from '../../actions';
 import BurgerView from './BurgerView';
 import SortingToolbar from './SortingToolbar';
 import BurgerForm from './BurgerForm';
 import SearchForm from './SearchForm';
 import Spinner from './Spinner';
+import BurgerContext from '../../context';
 
 const MainContainer = () => {
 
-  const [burgers, setBurgers] = useState([]);
+  const { state, dispatch } = useContext(BurgerContext);
 
   const [alert, setAlert] = useState(false);
 
@@ -19,7 +21,7 @@ const MainContainer = () => {
     try {
       const res = await axios.get('http://localhost:3001/burgers');
       console.log("RESPONSE: ", res)
-      setBurgers(res.data);
+      dispatch({ type: "FETCH_BURGERS", payload: res.data })
     } catch (error) {
       console.error(error.message);
     }
@@ -31,8 +33,9 @@ const MainContainer = () => {
   }
 
   const addBurger = async (burger) => {
+    if (burger.length < 1) return;
     const names = [];
-    burgers.forEach(el => names.push(el.name))
+    state.burgers.forEach(el => names.push(el.name))
     console.log("NAMES: ", names)
     const id = uuidv4();
     if (names.includes(burger)) {
@@ -47,7 +50,7 @@ const MainContainer = () => {
           created: Date.now(),
           updated: Date.now()
         });
-        setBurgers([ ...burgers, res.data])
+        dispatch({ type: 'ADD_BURGER', payload: res.data})
       } catch (error) {
         console.error(error.message)
       }
@@ -59,7 +62,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, approved: true, created: burger.created, updated: Date.now()
       });
-      fetchBurgers()
     } catch (error) {
       console.error(error.message)
     }
@@ -70,7 +72,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, approved: false, created: burger.created, updated: Date.now()
       });
-      fetchBurgers()
     } catch (error) {
       console.error(error.message)
     }
@@ -81,7 +82,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, votes: burger.votes + 1, created: burger.created, updated: Date.now()
       });
-      fetchBurgers()
     } catch (error) {
       console.error(error.message)
   }
@@ -92,13 +92,34 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, votes: burger.votes - 1, created: burger.created, updated: Date.now()
       });
-      fetchBurgers()
     } catch (error) {
       console.error(error.message)
+    }
   }
-}
 
-  const renderBurgers = burgers.map(burger =>
+  const sortByCreated = () => {
+    dispatch({ type: 'SORT_BY_CREATED' });
+  }
+
+  const sortByName = () => {
+    dispatch({ type: 'SORT_BY_NAME'});
+  }
+
+  const sortMostPopular = () => {
+    dispatch({ type: 'SORT_MOST_POPULAR'});
+  }
+
+  const sortLeastPopular = () => {
+    dispatch({ type: 'SORT_LEAST_POPULAR' });
+  }
+
+  const displayApproved = () => {
+    dispatch({ type: 'DISPLAY_APPROVED' });
+  }
+
+  console.log('STATE: ', state)
+
+  const renderBurgers = state.burgers.map(burger =>
     <BurgerView
       key={burger.id}
       burger={burger}
@@ -119,9 +140,15 @@ const MainContainer = () => {
       <header>
         <h1 style={{ fontSize: "300%" }}>Burgers List</h1>
       </header>
-      <SortingToolbar />
+      <SortingToolbar 
+        sortByCreated={sortByCreated} 
+        sortByName={sortByName} 
+        sortMostPopular={sortMostPopular} 
+        sortLeastPopular={sortLeastPopular} 
+        displayApproved={displayApproved}
+      />
       <SearchForm />
-      {burgers.length > 0 ? <div>{renderBurgers}</div> : <Spinner />}
+      {state.burgers.length > 0 ? <div>{renderBurgers}</div> : <Spinner />}
     </div>
   )
 }

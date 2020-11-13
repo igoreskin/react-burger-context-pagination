@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const SortingToolbar = () => {
+const SortingToolbar = (props) => {
 
   const [selectedControl, setSelectedControl] = useState(0);
 
@@ -20,23 +20,23 @@ const SortingToolbar = () => {
   const sortBurgers = (control) => {
     switch(control) {
       case 'Created':
-        console.log("Sort by created");
+        props.sortByCreated()
         break;
 
       case 'Name': 
-        console.log("Sort by name");
+        props.sortByName()
         break;
 
       case 'Most Popular': 
-        console.log("Sort by Most Popular");
+        props.sortMostPopular();
         break;
 
       case 'Least Popular':
-        console.log("Sort by Least Popular");
+        props.sortLeastPopular();
         break;
 
       case 'Approved':
-        console.log("Approved");
+        props.displayApproved();
         break;
     }
   }
