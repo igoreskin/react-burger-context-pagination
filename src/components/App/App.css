@@ -13,7 +13,8 @@
   width: 50%;
   margin: 0 auto;
   text-align: left;
-  padding: 20px 15px
+  padding: 20px 15px 40px 15px;
+  position: relative
 }
 
 .form {
@@ -112,12 +113,14 @@ input[type="submit"] {
   text-align: center;
   border: 1px solid black;
   border-right: none;
+  cursor: pointer;
 }
 
 .control-right {
   width: 20%;
   text-align: center;
   border: 1px solid black;
+  cursor: pointer;
 }
 
 /* .control:active,
@@ -128,4 +131,11 @@ input[type="submit"] {
 .control:hover,
 .control-right:hover {
   background-color: gray;
+}
+
+.paginator {
+  display: flex;
+  /* margin-bottom: px; */
+  position: absolute;
+  right: 15px
 }

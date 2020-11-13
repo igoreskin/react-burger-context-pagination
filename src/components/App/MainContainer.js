@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
-import actions from '../../actions';
 import BurgerView from './BurgerView';
 import SortingToolbar from './SortingToolbar';
 import BurgerForm from './BurgerForm';
 import SearchForm from './SearchForm';
 import Spinner from './Spinner';
 import BurgerContext from '../../context';
+import BurgerPaginator from './BurgerPaginator';
 
 const MainContainer = () => {
 
@@ -17,11 +17,18 @@ const MainContainer = () => {
 
   useEffect(() => {fetchBurgers()}, []);
 
+  const [page, setPage] = useState({
+    totalRows: 0,
+    rowsPerPage: 4,
+    firstRow: 0
+  })
+
   const fetchBurgers = async () => {
     try {
       const res = await axios.get('http://localhost:3001/burgers');
       console.log("RESPONSE: ", res)
-      dispatch({ type: "FETCH_BURGERS", payload: res.data })
+      dispatch({ type: "FETCH_BURGERS", payload: res.data });
+      setPage({ ...page, totalRows: res.data.length});
     } catch (error) {
       console.error(error.message);
     }
@@ -29,7 +36,7 @@ const MainContainer = () => {
 
   const displayAlert = () => {
     setAlert(true);
-    setTimeout(() => {setAlert(false)}, 2000)
+    setTimeout(() => {setAlert(false)}, 2500)
   }
 
   const addBurger = async (burger) => {
@@ -50,7 +57,8 @@ const MainContainer = () => {
           created: Date.now(),
           updated: Date.now()
         });
-        dispatch({ type: 'ADD_BURGER', payload: res.data})
+        dispatch({ type: 'ADD_BURGER', payload: res.data });
+        setPage({ ...page, totalRows: page.totalRows + 1 });
       } catch (error) {
         console.error(error.message)
       }
@@ -117,9 +125,29 @@ const MainContainer = () => {
     dispatch({ type: 'DISPLAY_APPROVED' });
   }
 
-  console.log('STATE: ', state)
+  // -----------------------------------------------------------------------------------------------
 
-  const renderBurgers = state.burgers.map(burger =>
+  console.log(state.burgers.length)
+
+  const nextPage = () => {
+    setPage({ ...page, firstRow: parseInt(page.firstRow) + parseInt(page.rowsPerPage) });
+  }
+
+  const prevPage = () => {
+    setPage({ ...page, firstRow: parseInt(page.firstRow) - parseInt(page.rowsPerPage) });
+  }
+
+  const toBeginning = () => {
+    setPage({ ...page, firstRow: 0 })
+  }
+
+  const toEnd = () => {
+    setPage({ ...page, firstRow: (page.totalRows - page.totalRows % page.rowsPerPage) })
+  }
+
+  let burgersToDisplay = state.burgers.slice(parseInt(page.firstRow), (parseInt(page.firstRow) + parseInt(page.rowsPerPage)))
+
+  const renderBurgers = burgersToDisplay.map(burger =>
     <BurgerView
       key={burger.id}
       burger={burger}
@@ -149,6 +177,7 @@ const MainContainer = () => {
       />
       <SearchForm />
       {state.burgers.length > 0 ? <div>{renderBurgers}</div> : <Spinner />}
+      <BurgerPaginator page={page} nextPage={nextPage} prevPage={prevPage} toBeginning={toBeginning} toEnd={toEnd} />
     </div>
   )
 }
