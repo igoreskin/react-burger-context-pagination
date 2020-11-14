@@ -29,7 +29,6 @@ const MainContainer = () => {
   const fetchBurgers = async () => {
     try {
       const res = await axios.get('http://localhost:3001/burgers');
-      // console.log("RESPONSE: ", res)
       dispatch({ type: "FETCH_BURGERS", payload: res.data });
       setPage({ ...page, totalRows: res.data.length});
       setAllBurgers(res.data)
@@ -47,7 +46,6 @@ const MainContainer = () => {
     if (burger.length < 1) return;
     const names = [];
     state.burgers.forEach(el => names.push(el.name.replace(/\W/g, '').toLowerCase()));
-    // console.log("NAMES: ", names)
     const id = uuidv4();
     if (names.includes(burger.replace(/\W/g, '').toLowerCase())) {
       displayAlert() 
@@ -185,7 +183,7 @@ const MainContainer = () => {
       />
       <SearchForm allBurgers={allBurgers} toBeginning={toBeginning} />
       {state.burgers.length > 0 ? <div>{renderBurgers}</div> : <Spinner />}
-      <BurgerPaginator page={page} nextPage={nextPage} prevPage={prevPage} toBeginning={toBeginning} toEnd={toEnd} />
+      {state.burgers.length > 0 && <BurgerPaginator page={page} nextPage={nextPage} prevPage={prevPage} toBeginning={toBeginning} toEnd={toEnd} />}
     </div>
   )
 }

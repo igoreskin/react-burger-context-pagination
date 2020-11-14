@@ -50,6 +50,13 @@ input[type="submit"] {
   color: red;
 }
 
+.alert.search {
+  position: absolute;
+  right: 20px;
+  top: 1px;
+  font-weight: bold;
+}
+
 .searchInput {
   position: relative;
 }

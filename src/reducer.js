@@ -35,12 +35,12 @@ export default function reducer(state, action) {
       const selected = [];
       const search = payload.search;
       const allBurgers = payload.allBurgers;
-      console.log("IN REDUCER: ", allBurgers)
-      if (search.length < 1) return state;
+      // console.log("IN REDUCER: ", allBurgers)
+      if (search.length < 1) return { ...state, burgers: allBurgers };
       allBurgers.forEach(el => {
-        if (el.name.replace(/\W/g, '').toLowerCase().includes(search.toLowerCase())) {
+        if (el.name.replace(/\W/g, '').toLowerCase().includes(search.replace(/\W/g, '').toLowerCase())) {
           selected.push(el);
-          console.log("SELECTED: ", selected)
+          // console.log("SELECTED: ", selected)
         }
       })
       return { ...state, burgers: selected }

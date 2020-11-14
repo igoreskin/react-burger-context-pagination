@@ -4,6 +4,8 @@ import MainContainer from './MainContainer';
 import burgerReducer from '../../reducer';
 import BurgerContext from '../../context';
 
+import 'animate.css';
+
 const App = () => {
 
   const initialState = useContext(BurgerContext);
