@@ -59,6 +59,20 @@ export default function reducer(state, action) {
       const burgersWithDispproved = [...state.burgers.slice(0, disapprIdx), disapprovedBurger, ...state.burgers.slice(disapprIdx + 1)];
       return { ...state, burgers: burgersWithDispproved };
 
+    case 'UPVOTE_BURGER':
+      const upvotedBurger = payload;
+      const burgerToUpvote = state.burgers.find(el => el.id === upvotedBurger.id);
+      const upvIdx = state.burgers.indexOf(burgerToUpvote);
+      const burgersWithUpvoted = [...state.burgers.slice(0, upvIdx), upvotedBurger, ...state.burgers.slice(upvIdx + 1)];
+      return { ...state, burgers: burgersWithUpvoted };
+
+    case 'DOWNVOTE_BURGER':
+      const downvotedBurger = payload;
+      const burgerToDownvote = state.burgers.find(el => el.id === downvotedBurger.id);
+      const downvIdx = state.burgers.indexOf(burgerToDownvote);
+      const burgersWithDownvoted = [...state.burgers.slice(0, downvIdx), downvotedBurger, ...state.burgers.slice(downvIdx + 1)];
+      return { ...state, burgers: burgersWithDownvoted };
+
     default: 
       return state;
   }
