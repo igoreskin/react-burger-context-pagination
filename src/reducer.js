@@ -4,32 +4,32 @@ export default function reducer(state, action) {
   switch(type) {
     case 'FETCH_BURGERS': 
       const sortedBurgers = payload.sort((a, b) => b.created - a.created);
-      return { ...state, burgers: sortedBurgers }
+      return { ...state, burgers: sortedBurgers };
 
     case 'ADD_BURGER': 
       console.log(payload)
-      return { ...state, burgers: [payload, ...state.burgers]}
+      return { ...state, burgers: [payload, ...state.burgers]};
 
     case 'SORT_BY_CREATED':
       const sortedByCreated = state.burgers.sort((a, b) => b.created - a.created);
-      return { ...state, burgers: sortedByCreated }
+      return { ...state, burgers: sortedByCreated };
 
     case 'SORT_BY_NAME':
       const sortedByName = state.burgers.sort((a, b) => a.name.replace(/\W/g, '').localeCompare(b.name.replace(/\W/g, '')));
-      return { ...state, burgers: sortedByName }
+      return { ...state, burgers: sortedByName };
 
     case 'SORT_MOST_POPULAR':
       const sortedMostPopular = state.burgers.sort((a, b) => b.votes - a.votes);
-      return { ...state, burgers: sortedMostPopular }
+      return { ...state, burgers: sortedMostPopular };
 
     case 'SORT_LEAST_POPULAR':
       const sortedLeastPopular = state.burgers.sort((a, b) => a.votes - b.votes);
-      return { ...state, burgers: sortedLeastPopular }
+      return { ...state, burgers: sortedLeastPopular };
 
     case 'DISPLAY_APPROVED':
       const displayApproved = state.burgers.filter(el => el.approved);
-      const displayDisapproved = state.burgers.filter(el => !el.approved)
-      return { ...state, burgers: [ ...displayApproved, ...displayDisapproved ] }
+      const displayDisapproved = state.burgers.filter(el => !el.approved);
+      return { ...state, burgers: [ ...displayApproved, ...displayDisapproved ] };
 
     case 'SEARCH_BURGER':
       const selected = [];
@@ -43,12 +43,23 @@ export default function reducer(state, action) {
           // console.log("SELECTED: ", selected)
         }
       })
-      return { ...state, burgers: selected }
+      return { ...state, burgers: selected };
+
+    case 'APPROVE_BURGER':
+      const approvedBurger = payload;
+      const burgerToApprove = state.burgers.find(el => el.id === approvedBurger.id);
+      const apprIdx = state.burgers.indexOf(burgerToApprove);
+      const burgersWithApproved = [...state.burgers.slice(0, apprIdx), approvedBurger, ...state.burgers.slice(apprIdx + 1)];
+      return { ...state, burgers: burgersWithApproved };
+
+    case 'DISAPPROVE_BURGER':
+      const disapprovedBurger = payload;
+      const burgerToDispprove = state.burgers.find(el => el.id === disapprovedBurger.id);
+      const disapprIdx = state.burgers.indexOf(burgerToDispprove);
+      const burgersWithDispproved = [...state.burgers.slice(0, disapprIdx), disapprovedBurger, ...state.burgers.slice(disapprIdx + 1)];
+      return { ...state, burgers: burgersWithDispproved };
 
     default: 
       return state;
   }
 }
-
-
-// payload.sort((a, b) => a.name.replace(/\W/g, '').localeCompare(b.name.replace(/\W/g, '')));
