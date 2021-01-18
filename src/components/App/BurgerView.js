@@ -12,13 +12,11 @@ const BurgerView = ({ burger, approveBurger, disapproveBurger, upvoteBurger, dow
   }
 
   const handleUpClick = () => {
-    // console.log('UPVOTE: ', burger.id)
     setVotes(votes + 1)
     upvoteBurger(burger);
   }
 
   const handleDownClick = () => {
-    // console.log('DOWNVOTE: ', burger.id)
     votes > 0 && setVotes(votes - 1);
     votes > 0 && downvoteBurger(burger);
   }

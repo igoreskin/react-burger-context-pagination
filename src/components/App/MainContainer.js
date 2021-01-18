@@ -72,7 +72,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, approved: true, created: burger.created, updated: Date.now()
       });
-      // console.log('APPROVED: ', res.data)
       dispatch({ type: 'APPROVE_BURGER', payload: res.data})
     } catch (error) {
       console.error(error.message)
@@ -84,7 +83,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, approved: false, created: burger.created, updated: Date.now()
       }); 
-      // console.log('DISAPPROVED: ', res.data)
       dispatch({ type: 'DISAPPROVE_BURGER', payload: res.data })
     } catch (error) {
       console.error(error.message)
@@ -96,7 +94,6 @@ const MainContainer = () => {
       const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
         ...burger, votes: burger.votes + 1, created: burger.created, updated: Date.now()
       });
-      // console.log('UPVOTED: ', res.data)
       dispatch({ type: 'UPVOTE_BURGER', payload: res.data });
     } catch (error) {
       console.error(error.message)
@@ -109,7 +106,6 @@ const MainContainer = () => {
         const res = await axios.put(`http://localhost:3001/burgers/${burger.id}`, {
           ...burger, votes: burger.votes - 1, created: burger.created, updated: Date.now()
         });
-      // console.log('DOWNVOTED: ', res.data)
         dispatch({ type: 'DOWNVOTE_BURGER', payload: res.data });
       } catch (error) {
         console.error(error.message)
